@@ -1,0 +1,27 @@
+Amount = SUM('Online_casino_DIB'[TransactionAmount])
+
+Approval Rate = DIVIDE(CALCULATE('Меры'[Count_transaction], 'Online_casino_DIB'[Status] = "APPROVED"),'Меры'[Count_transaction]) 
+
+Avg Income = 'Меры'[Total Income] / 'Меры'[Count Income]
+
+Avg Withdraw = 'Меры'[Total Withdraw] / 'Меры'[Count Withdraw]
+
+Count Income = CALCULATE(COUNT(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Income")
+
+Count Withdraw = CALCULATE(COUNT(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Withdraw")
+
+Count_transaction = COUNT(Online_casino_DIB[TransactionAmount])
+
+GGR = CALCULATE('Меры'[Total Income] - IF(ISBLANK('Меры'[Total Withdraw]),-0,'Меры'[Total Withdraw]), 'Online_casino_DIB'[Status] = "APPROVED")
+
+GGR % = DIVIDE('Меры'[GGR], CALCULATE(SUM(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Income", 'Online_casino_DIB'[Status] = "APPROVED"))
+
+Max Income = CALCULATE(MAX(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Income", 'Online_casino_DIB'[Status] = "APPROVED")
+
+Max Withdraw = CALCULATE(MAX(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Withdraw", 'Online_casino_DIB'[Status] = "APPROVED")
+
+Range AR = 'Меры'[Approval Rate] - 0.04
+
+Total Income = CALCULATE(SUM(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Income")
+
+Total Withdraw = CALCULATE(SUM(Online_casino_DIB[TransactionAmount]), 'Online_casino_DIB'[TransactionTypeMain] = "Withdraw")

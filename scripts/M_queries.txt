@@ -1,0 +1,45 @@
+= Csv.Document(File.Contents("C:\Users\andre\Desktop\power bi\psp\Online_sports_DIB.csv"),[Delimiter=",", Columns=5, Encoding=1251, QuoteStyle=QuoteStyle.None])
+
+= Table.PromoteHeaders(Источник, [PromoteAllScalars=true])
+
+= Table.TransformColumnTypes(#"Повышенные заголовки",{{"ReqTimeUTC", type datetime}, {"TransactionType", type text}, {"TransactionAmount", type text}, {"Status", type text}, {"AccountIdentifier", type text}})
+
+= Table.AddColumn(#"Измененный тип", "Type", each "Sports")
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+= Csv.Document(File.Contents("C:\Users\andre\Desktop\power bi\psp\Online_casino_DIB.csv"),[Delimiter=",", Columns=5, Encoding=1251, QuoteStyle=QuoteStyle.None])
+
+= Table.PromoteHeaders(Источник, [PromoteAllScalars=true])
+
+= Table.TransformColumnTypes(#"Повышенные заголовки",{{"ReqTimeUTC", type datetime}, {"TransactionType", type text}, {"TransactionAmount", type text}, {"Status", type text}, {"AccountIdentifier", type text}})
+
+= Table.AddColumn(#"Измененный тип", "Type", each "Casino")
+
+= Table.Combine({#"Добавлен пользовательский объект", Online_sports_DIB})
+
+= Table.AddColumn(#"Добавленный запрос", "TransactionTypeMain", each if [TransactionType] = "LOYALTYCARDCREDITCL" then "Income" else if [TransactionType] = "LOYALTYCARDCREDITACH" then "Income" else if [TransactionType] = "LOYALTYCARDDEBIT" then "Bonus" else if [TransactionType] = "LOYALTYCARDCREDIT" then "Withdraw" else null)
+
+= Table.ReplaceValue(#"Условный столбец добавлен",".",",",Replacer.ReplaceText,{"TransactionAmount"})
+
+= Table.TransformColumnTypes(#"Замененное значение",{{"TransactionAmount", type number}})
+
+= Table.AddColumn(#"Измененный тип1", "Дата", each DateTime.Date([ReqTimeUTC]), type date)
+
+= Table.AddColumn(#"Вставлено: дата", "Начало часа", each Time.StartOfHour([ReqTimeUTC]), type datetime)
+
+= Table.TransformColumnTypes(#"Вставленное начало часа",{{"Начало часа", type time}})
+
+= Table.RenameColumns(#"Вставленное начало часа",{{"Начало часа", "Hour"}})
+
+= Table.TransformColumnTypes(#"Переименованные столбцы",{{"Hour", type time}})
+
+= Table.AddColumn(#"Измененный тип2", "Название дня", each Date.DayOfWeekName([Дата]), type text)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+= Table.TransformColumnTypes(Источник,{{"День", type text}, {"Day", type text}, {"Row", Int64.Type}})
+
+
