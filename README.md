@@ -11,6 +11,7 @@ Download the [`dashboard.pbix`](dashboard.pbix) file.
 ![Main Screen](screenshots/main_screen.png)
 ![GGR](screenshots/GGR.png)
 ![AR](screenshots/AR.png)
+![Detail](screenshots/Detail.png)
 
 ## Technologies & Code
 - **DAX measures** — [view](scripts/DAX_measures.txt)
